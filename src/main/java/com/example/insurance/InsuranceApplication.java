@@ -19,22 +19,7 @@ public class InsuranceApplication {
  
 	@Autowired
 	UserService service;
-	
-	public void run(String... args) throws Exception {
-		// TODO Auto-generated method stub
-		UserDTO user= new UserDTO();
-		user.setUsername("Akash27");
-		user.setPassword("12345678");
-		user.setFirstName("Akash");
-		user.setLastName("Tumma");
-		user.setEmail("tummaAkash@gmail.com");
-		user.setDateOfBirth(LocalDate.now());
-		user.setAddress("Uppal");
-		user.setCity("Hyderabad");
-		user.setState("Telangana");
-        user.setZipCode("500039");		
-        service.addUser(user);
-	}
+
 
  
 }
