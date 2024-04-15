@@ -101,4 +101,10 @@ public class Users {
 		}
 		policies.add(p);
 	}
+	public void removeBeneficiary(Beneficiary b) {
+		beneficiaries.remove(b);
+	}
+	public void removePolicy(Policy p) {
+		policies.remove(p);
+	}
 }

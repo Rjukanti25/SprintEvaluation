@@ -41,17 +41,17 @@ public class Policy {
 	@Min(value = 500, message = "Premium must be positive")
 	private int premium;
 	@JsonManagedReference
-	@OneToMany(mappedBy = "policies", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "policies", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	List<Payment> payments;
 	@JsonManagedReference
-	@OneToMany(mappedBy = "policies", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "policies", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	List<Transaction> transactions;
 	@JsonManagedReference
-	@OneToMany(mappedBy = "policies", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "policies", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	List<Beneficiary> beneficiaries;
  
 	@JsonManagedReference
-	@ManyToMany(mappedBy = "policies", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@ManyToMany(mappedBy = "policies", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	List<Users> user;
 	public void addUsers (Users u) {
 		if (user == null) {
@@ -59,4 +59,11 @@ public class Policy {
 		}
 		user.add(u);
 	}
+	public void removeBeneficiary(Beneficiary b) {
+		beneficiaries.remove(b);
+	}
+	public void removeTransaction(Transaction t) {
+		transactions.remove(t);
+	}
+
 }

@@ -17,8 +17,8 @@ public class InsuranceApplication {
 		SpringApplication.run(InsuranceApplication.class, args);
 	}
  
-	@Autowired
-	UserService service;
+	//@Autowired
+	//UserService service;
 
 
  

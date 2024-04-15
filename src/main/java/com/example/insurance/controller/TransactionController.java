@@ -40,9 +40,4 @@ public class TransactionController {
         return new ResponseEntity<TransactionDTO>(updatedTransaction,HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> deleteTransactionById(@PathVariable("id") int transactionId) {
-        boolean deleted= transactionService.deleteTransactionById(transactionId);
-        return new ResponseEntity<Boolean>(deleted,HttpStatus.OK);
-    }
 }

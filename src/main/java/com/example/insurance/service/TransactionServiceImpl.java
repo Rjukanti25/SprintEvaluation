@@ -68,13 +68,10 @@ public class TransactionServiceImpl implements TransactionService{
 
         // Update transaction fields here based on transactionDTO
         // For simplicity, let's assume updating is handled similarly to adding
-
+    
+        transaction.setStatus(transactionDTO.getStatus());
         Transaction updatedTransaction = transactionRepository.save(transaction);
         return transactionMapper.transactionToTransactionDTO(updatedTransaction);
 }
-    @Override
-    public boolean deleteTransactionById(int transactionId) {
-        transactionRepository.deleteById(transactionId);
-        return true;
-    }
+
 }

@@ -6,7 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
  
 import com.example.insurance.dto.PolicyDTO;
+import com.example.insurance.entity.Beneficiary;
+import com.example.insurance.entity.Payment;
 import com.example.insurance.entity.Policy;
+import com.example.insurance.entity.Transaction;
 import com.example.insurance.entity.Users;
 import com.example.insurance.mapper.PolicyMapper;
 import com.example.insurance.repository.PolicyRepository;
@@ -26,7 +29,7 @@ public class PolicyServiceImpl implements PolicyService {
 	public PolicyDTO savePolicy(int userId, PolicyDTO policyDTO) {
 		Users user = userRepo.findById(userId).get();
 		Policy policy = policyMapper.convertFromDTO(policyDTO);
-//		user.addPolicy(policy);
+		user.addPolicy(policy);
 		policy.addUsers(user);
 		return policyMapper.convertToDTO(policyRepo.save(policy));
 	}
@@ -37,10 +40,25 @@ public class PolicyServiceImpl implements PolicyService {
 		Policy policy = policyRepo.findById(id).orElseThrow(() -> new RuntimeException());
  
 		// If policy entity is found, delete it
+		List<Transaction> trans = policy.getTransactions();
+		for (int i = 0; i < trans.size(); i++) {
+			trans.get(i).setPolicies(null);
+		}
+		List<Payment> pays = policy.getPayments();
+		for (int i = 0; i < pays.size(); i++) {
+			pays.get(i).setPolicies(null);
+		}
+		List<Beneficiary> benes = policy.getBeneficiaries();
+		for (int i = 0; i < benes.size(); i++) {
+			benes.get(i).setPolicies(null);
+		}
+		List<Users> users = policy.getUser();
+		for (int i = 0; i < users.size(); i++) {
+			users.get(i).setPolicies(null);
+		}
 		policyRepo.delete(policy);
- 
 		// If policy entity is not found, return false
-		return false;
+		return true;
 	}
  
 	@Override

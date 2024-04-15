@@ -32,9 +32,9 @@ public class UserController {
         return new ResponseEntity<UserDTO> (addedUser,HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
-    	UserDTO updatedUser =service.updateUser(userDTO);
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable int userId,@RequestBody UserDTO userDTO) {
+    	UserDTO updatedUser =service.updateUser(userId,userDTO);
         return new ResponseEntity<UserDTO>(updatedUser,HttpStatus.OK);
     }
 
@@ -58,8 +58,8 @@ public class UserController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<UserDTO> signIn(@RequestParam String userName, @RequestParam String password) {
-        UserDTO user = service.signIn(userName, password);
+    public ResponseEntity<UserDTO> signIn(@RequestParam String username, @RequestParam String password) {
+        UserDTO user = service.signIn(username, password);
         return new ResponseEntity<UserDTO>(user,HttpStatus.OK);
     }
 

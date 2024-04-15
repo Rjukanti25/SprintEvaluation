@@ -13,5 +13,4 @@ public interface TransactionService {
 
     TransactionDTO updateTransaction(TransactionDTO transactionDTO);
 
-    boolean deleteTransactionById(int transactionId);
 }

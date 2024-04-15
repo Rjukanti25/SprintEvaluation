@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
  
 import com.example.insurance.dto.UserDTO;
 import com.example.insurance.entity.Users;
+import com.example.insurance.exception.ResourceNotFoundException;
 import com.example.insurance.mapper.UserMapper;
 import com.example.insurance.repository.UsersRepository;
  
@@ -35,19 +36,42 @@ public class UserServiceImpl implements UserService {
         return userMapper.UserstoUsersDTO(user);
     }
 	@Override
-	public UserDTO updateUser(UserDTO userDTO) {
-		Users existingUser = userRepo.findById(userDTO.getUserId())
-				.orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userDTO.getUserId()));
-		Users updatedUser = userRepo.save(existingUser);
- 
-	    // Map updated User entity back to UserDTO
-	    return userMapper.UserstoUsersDTO(updatedUser);
+	public UserDTO updateUser(int userId,UserDTO userDTO) {
+		
+		Users existingUser = userRepo.findById(userId)
+
+						.orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userDTO.getUserId()));
+
+				existingUser.setUsername(userDTO.getUsername());
+
+				existingUser.setPassword(userDTO.getPassword());
+
+				existingUser.setEmail(userDTO.getEmail());
+
+				existingUser.setFirstName(userDTO.getFirstName());
+
+				existingUser.setLastName(userDTO.getLastName());
+
+				existingUser.setDateOfBirth(userDTO.getDateOfBirth());
+
+				existingUser.setAddress(userDTO.getAddress());
+
+				existingUser.setCity(userDTO.getCity());
+
+				existingUser.setState(userDTO.getState());
+
+				existingUser.setZipCode(userDTO.getZipCode());
+		 
+				// Map updated User entity back to UserDTO
+				existingUser=userRepo.save(existingUser);
+
+				return userMapper.UserstoUsersDTO(existingUser);
 	}
 	@Override
     public UserDTO getUserByEmail(String email) {
         // Find the user by email
         Users user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
  
         // Map User entity to UserDTO and return
         return userMapper.UserstoUsersDTO(user);
@@ -67,7 +91,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO signIn(String userName, String password) {
         // Find the user by username
         Users user = userRepo.findByUsername(userName)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + userName));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + userName));
  
         // Check if the provided password matches the user's password
         if (!user.getPassword().equals(password)) {

@@ -36,12 +36,12 @@ public class Payment {
 	private int paymentId;
  
 	@JsonBackReference
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name = "user_id")
 	Users user;
  
 	@JsonBackReference
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name = "policy_id")
 	Policy policies;
  
