@@ -11,4 +11,5 @@ public interface UserService {
 	public UserDTO getUserByEmail(String email);
 	public List<UserDTO> getAllUsers();
 	public UserDTO signIn(String userName, String Password);
+	public boolean deleteUser(int userId);
 }

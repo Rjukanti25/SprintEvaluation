@@ -41,6 +41,9 @@ public class UserServiceImpl implements UserService {
 		Users existingUser = userRepo.findById(userId)
 
 						.orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userDTO.getUserId()));
+			if(userDTO==null) {
+				throw new IllegalArgumentException("UserDTO cannot be null");
+			}
 
 				existingUser.setUsername(userDTO.getUsername());
 
@@ -101,5 +104,16 @@ public class UserServiceImpl implements UserService {
         // Map User entity to UserDTO and return
         return userMapper.UserstoUsersDTO(user);
     }
+	
+	@Override
+	public boolean deleteUser(int userId) {
+	    Users user = userRepo.findById(userId)
+	            .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+
+	    userRepo.delete(user);
+
+	    return true;
+	}
+
 }
 

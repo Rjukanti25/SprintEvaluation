@@ -39,7 +39,7 @@ public class TransactionMapper {
 	    	   TransactionDTO dto = new TransactionDTO();
 		        dto.setTransactionId(transaction.getTransactionId());
 		        dto.setUserId(transaction.getUser().getUserId());
-		        dto.setPolicyId(transaction.getPolicies().getPolicyId());
+		        dto.setPolicyId(transaction.getPolicies() == null ? -1 : transaction.getPolicies().getPolicyId());
 		        dto.setPaymentId(transaction.getPayments().getPaymentId());
 		        dto.setTransactionDate(transaction.getTransactionDate());
 		        dto.setStatus(transaction.getStatus());

@@ -37,7 +37,7 @@ public class PaymentMapper {
         PaymentDTO dto = new PaymentDTO();
         dto.setPaymentId(payment.getPaymentId());
         dto.setUserId(payment.getUser().getUserId());
-        dto.setPolicyId(payment.getPolicies().getPolicyId());
+        dto.setPolicyId(payment.getPolicies() == null ? -1 : payment.getPolicies().getPolicyId());
         dto.setPaymentAmount(payment.getPaymentAmount());
         dto.setPaymentDate(payment.getPaymentDate());
         return dto;
