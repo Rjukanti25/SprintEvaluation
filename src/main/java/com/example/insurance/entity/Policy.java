@@ -43,9 +43,11 @@ public class Policy {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "policies", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	List<Payment> payments;
+	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "policies", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	List<Transaction> transactions;
+	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "policies", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	List<Beneficiary> beneficiaries;

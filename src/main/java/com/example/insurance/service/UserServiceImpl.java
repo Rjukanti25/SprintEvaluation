@@ -17,8 +17,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
  
-	UsersRepository userRepo;
-	UserMapper userMapper;
+    private final UsersRepository userRepo;
+    private final UserMapper userMapper;
  
 	@Override
 	public UserDTO addUser(UserDTO userdto) {
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
 				existingUser.setUsername(userDTO.getUsername());
 
-				existingUser.setPassword(userDTO.getPassword());
+		        existingUser.setPassword(userMapper.encryptPassword(userDTO.getPassword())); 
 
 				existingUser.setEmail(userDTO.getEmail());
 

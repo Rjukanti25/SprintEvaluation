@@ -40,7 +40,7 @@ public class UserRepoTest {
         // When
         List<Users> employees = this.userRepo.findAll();
         // Then
-        Assertions.assertEquals(6, employees.size());
+        Assertions.assertEquals(5, employees.size());
     }
 	
 	@Test

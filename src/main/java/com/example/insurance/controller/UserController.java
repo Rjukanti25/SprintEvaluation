@@ -1,66 +1,111 @@
 package com.example.insurance.controller;
 
-import java.util.List;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.insurance.dto.UserDTO;
+import com.example.insurance.entity.Users;
 import com.example.insurance.service.UserService;
 
-import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Date;
+//import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/insurance/users")
 public class UserController {
-	UserService service;
-	
 
-    @PostMapping("/add")
-    public ResponseEntity<UserDTO> addUser(@Valid @RequestBody UserDTO userDTO) {
-    	UserDTO addedUser =service.addUser(userDTO);
-        return new ResponseEntity<UserDTO> (addedUser,HttpStatus.CREATED);
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PutMapping("/update/{userId}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable int userId,@RequestBody UserDTO userDTO) {
-    	UserDTO updatedUser =service.updateUser(userId,userDTO);
-        return new ResponseEntity<UserDTO>(updatedUser,HttpStatus.OK);
+    @PostMapping("/add")
+    public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO userDTO) {
+        // Add a new user
+        UserDTO addedUser = userService.addUser(userDTO);
+        return new ResponseEntity<>(addedUser, HttpStatus.CREATED);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable int userId) {
-    	UserDTO user = service.getUserById(userId);
-        return new ResponseEntity<UserDTO>(user,HttpStatus.OK);
+        // Get user by ID
+        UserDTO user = userService.getUserById(userId);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable int userId, @RequestBody UserDTO userDTO) {
+        // Update user by ID
+        UserDTO updatedUser = userService.updateUser(userId, userDTO);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
 
     @GetMapping("/email/{email}")
     public ResponseEntity<UserDTO> getUserByEmail(@PathVariable String email) {
-        UserDTO user = service.getUserByEmail(email);
-        return new ResponseEntity<UserDTO>(user,HttpStatus.OK);
+        // Get user by email
+        UserDTO user = userService.getUserByEmail(email);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> users = service.getAllUsers();
-        return new ResponseEntity<List<UserDTO>> (users,HttpStatus.OK);
+        // Get all users
+        List<UserDTO> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PostMapping("/signin")
     public ResponseEntity<UserDTO> signIn(@RequestParam String username, @RequestParam String password) {
-        UserDTO user = service.signIn(username, password);
-        return new ResponseEntity<UserDTO>(user,HttpStatus.OK);
+        // Sign in with username and password
+        UserDTO user = userService.signIn(username, password);
+        return new ResponseEntity<UserDTO>(user, HttpStatus.OK);
+        
+//    	String token =getJWTToken(username);
+//    	Users user=new Users();
+//    	user.setUsername(username);
+//    	user.setToken(token);
+//    	return new ResponseEntity<Users>(user,HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable int userId) {
+        // Delete user by ID
+        boolean deleted = userService.deleteUser(userId);
+        if (deleted) {
+            return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed to delete user", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+//    private String getJWTToken(String username) {
+//		String secretKey = "mySecretKey";
+//		List<GrantedAuthority> grantedAuthorities = AuthorityUtils
+//				.commaSeparatedStringToAuthorityList("ROLE_USER");
+//		String token = Jwts
+//				.builder()
+//				.setId("softtekJWT")
+//				.setSubject(username)
+//				.claim("authorities",
+//						grantedAuthorities.stream()
+//								.map(GrantedAuthority::getAuthority)
+//								.collect(Collectors.toList()))
+//				.setIssuedAt(new Date(System.currentTimeMillis()))
+//				.setExpiration(new Date(System.currentTimeMillis() + 600000))
+//				.signWith(SignatureAlgorithm.HS512,
+//						secretKey.getBytes()).compact();
+// 
+//		return "Bearer " + token;
+//	}
 }

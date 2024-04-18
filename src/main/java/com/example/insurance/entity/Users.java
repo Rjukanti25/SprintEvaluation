@@ -45,8 +45,10 @@ public class Users {
  
 	@Column
 	@NotBlank(message = "Password cannot be blank")
-    @Pattern(regexp = "^[\\d]{10}$", message = "Password must be 10 digits") 
+//    @Pattern(regexp = "^[\\d]{10}$", message = "Password must be 10 digits") 
 	private String password;
+	
+	private String token;
  
 	@Column
 	@NotBlank(message = "Email cannot be blank")
